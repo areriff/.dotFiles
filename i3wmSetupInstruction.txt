@@ -1,0 +1,45 @@
+- put these two lines in /etc/pacman.conf
+    [aur-archlinux]
+    Server = https://repo.itmettke.de/aur/$repo/$arch
+- pacman -S terminator
+- pacman -S xorg
+- pacman -S xorg-xinit
+- put "exec i3" (without quotation mark) in ~/.xinitrc
+- startx
+- install dmenu2
+- install gtkmm3
+- for vm:
+  - install open-vm-tools
+  - install xf86-input-vmmouse
+  - install xf86-video-vmware
+  - run "systemctl enable vmtoolsd.service" (without quotation mark)
+  - run "systemctl start vmtoolsd.service" (without quotation mark)
+  - run "systemctl enable vmware-vmblock-fuse.service" (without quotation mark)
+  - run "systemctl start vmware-vmblock-fuse.service" (without quotation mark)
+  - run "vmware-toolbox-cmd timesync enable" (without quotation mark)
+  - run "hwclock --hctosys --localtime" (without quotation mark)
+  - put "vmware-user" before "exec i3" in ~/.xinitrc to enable drag and drop
+- install ttf-dejavu
+- install ttf-font-awesome
+- install "octopi" or "tkpacman"
+- edit ~/.zshrc as you see fit
+- install powerline
+- install powerline-fonts
+- install python2-pygit2 (for powerline)
+- install powerline2 (remove powerline?)
+- install variety (or wallch or feh)
+
+# Editing .config/ir/config
+## Adjusting font
+     font pango:DejaVu Sans Mono Regular 12
+## borderless terminal
+     bindsym $mod+Return exec terminator -b 
+## dmenu size
+     bindsym $mod+d exec dmenu_run -l 5 -fn "DejaVuSansMono-12:Regular"
+## bar
+     status_command i3blocks
+## Desktop compositor
+     exec compton -c
+## Wallpaper changer
+     exec variety (or wallch or feh)
+     exec feh --randomize --bg-fill ~/.wallpaper/*

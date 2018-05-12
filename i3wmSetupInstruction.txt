@@ -1,3 +1,9 @@
+// How to increase /tmp file for compiling large programs
+    `sudo umount /tmp`
+    sudo mount -t tmpfs -o size=1048576,mode=1777 overflow /tmp
+this will increase the size by 1MB if you add and extra zero that is 10485760 will increase the size by 10MB. Add space upon how much you needed.
+//
+
 - put these two lines in /etc/pacman.conf
     [aur-archlinux]
     Server = https://repo.itmettke.de/aur/$repo/$arch

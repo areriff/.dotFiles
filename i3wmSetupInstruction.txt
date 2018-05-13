@@ -36,7 +36,7 @@
 - install powerline2 (remove powerline?)
 - install variety (or wallch or feh)
 
-# Editing .config/ir/config
+# Editing .config/i3/config
 ## Adjusting font
      font pango:DejaVu Sans Mono Regular 12
 ## borderless terminal
@@ -91,5 +91,37 @@
          bindsym Return mode "default"
          bindsym Escape mode "default"
      }
+## CAPS and NUM key indicator
+bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
+
+# Editing .config/i3blocks/config
+## Uncomment these line to activate CAPS and NUM key indicator
+[keyindicator]
+instance=CAPS
+interval=once
+signal=11
+
+[keyindicator]
+instance=NUM
+interval=once
+signal=11
+
+##this is symbols for labels 
+### memory (microchip)
+||
+### hdd (black and white)
+|| and ||
+### home
+||
+### wifi
+||
+### chart-line
+||
+### chart-area
+||
+### thermometer-half
+||
 
 - install lxappearance-gtk3
+

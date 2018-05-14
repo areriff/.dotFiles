@@ -1,9 +1,65 @@
-// How to increase /tmp file for compiling large programs
-       `sudo umount /tmp`
-        sudo mount -t tmpfs -o size=1048576,mode=1777 overflow /tmp
-   this will increase the size by 1MB if you add and extra zero that is 10485760 will increase the size by 10MB. Add space upon how much you needed.
-//
+# How to install arch linux
+- check internet "ping www.google.com -c 4"
+- if using wifi, get network device name "ip link show"
+- if using wifi "wifi-menu -o wlp9s0"
+- check partition table "fdisk -l"
+- create partition using "cfdisk"
+  - label type: dos
+  - two primary partition (bootable and swap)
+  - one extended (home)
+- verify partition table "fdisk -l"
+- format partition "mkfs.ext4 /dev/sda1"
+- format partition "mkfs.ext4 /dev/sda5"
+- format and activate swap partition
+  - "mkswap /dev/sda2"
+  - "swapon /dev/sda2"
+- mount primary partition in (/mnt) and home partition in (/mnt/home)
+  - "mount /dev/sda1 /mnt"
+  - "mkdir /mnt/home"
+  - "mount /dev/sda5 /mnt/home"
+-install arch base system
+  - "pacstrap /mnt base base-devel"
+- create fstab
+  - "genfstab /mnt >> /mnt/etc/fstab"
+- verify fstab
+  - "cat /mnt/etc/fstab"
+- switch to the installed Arch Linux base system
+  - arch-chroot /mnt /bin/bash
+- configure system language
+  - "vi /etc/locale.gen"
+  - uncomment en_US.UTF-8 UTF-8
+- generate locales
+  - "locale-gen"
+- create /etc/locale.conf
+  - "vi /etc/locale.conf"
+  - add this to the first line in /etc/locale.conf
+    - LANG=en_US.UTF-8
+- assign timezone
+  - "ls /usr/share/zoneinfo/Asia/Kuala_Lumpur"
+  - "ln -s /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime"
+- set the time standard to UTC
+  - "hwclock --systohc --utc"
+- set root password
+  - "passwd"
+- add file /etc/hostname and put system name inside it
+- add file /etc/hosts and put hostname name inside it (must same as hostname)
+- install grub
+  - "pacman -S grub os-prober"
+  - "grub-install /dev/sda"
+  - "grub-mkconfig -o /boot/grub/grub.cfg"
+- "exit" "umount /mnt/home" "umount /mnt" "reboot"
+- add user
+  - "useradd -m -g users -G wheel,storage,power -s /bin/bash areriff"
+  - passwd areriff
+  - install sudo
+  - visudo
+  - uncomment the the line:
+    - %wheel ALL=(ALL) ALL
 
+- install reflector to update mirrorlist automatically
+  - backup mirror list
+    - "sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak"
+  - "sudo reflector --verbose --latest 5 --sort rate --country Singapore --save /etc/pacman.d/mirrorlist"
 
 - put these two lines in /etc/pacman.conf
     [aur-archlinux]
@@ -125,3 +181,8 @@ signal=11
 
 - install lxappearance-gtk3
 
+// How to increase /tmp file for compiling large programs
+       `sudo umount /tmp`
+        sudo mount -t tmpfs -o size=1048576,mode=1777 overflow /tmp
+   this will increase the size by 1MB if you add and extra zero that is 10485760 will increase the size by 10MB. Add space upon how much you needed.
+//

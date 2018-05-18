@@ -17,6 +17,9 @@
   - "mount /dev/sda1 /mnt"
   - "mkdir /mnt/home"
   - "mount /dev/sda5 /mnt/home"
+- the following rank mirror steps breaks pacman -Syyu after install. Need to undo
+  - rank the mirrors (rank 6 fastest, it will take a while)
+    - rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 -install arch base system
   - "pacstrap /mnt base base-devel"
 - create fstab
@@ -25,6 +28,10 @@
   - "cat /mnt/etc/fstab"
 - switch to the installed Arch Linux base system
   - arch-chroot /mnt /bin/bash
+- Add the following lines to /etc/pacman.conf
+  - [aur-archlinux]
+  - Server = https://repo.itmettke.de/aur/$repo/$arch
+  - SigLevel = TrustAll
 - configure system language
   - "vi /etc/locale.gen"
   - uncomment en_US.UTF-8 UTF-8
@@ -43,11 +50,16 @@
   - "passwd"
 - add file /etc/hostname and put system name inside it
 - add file /etc/hosts and put hostname name inside it (must same as hostname)
+- install intel-ucode package for intel processor
 - install grub
   - "pacman -S grub os-prober"
   - "grub-install /dev/sda"
   - "grub-mkconfig -o /boot/grub/grub.cfg"
 - "exit" "umount /mnt/home" "umount /mnt" "reboot"
+- enable dhcp
+  - type "systemctl enable dhcpcd"
+  - type "systemctl start dhcpcd"
+  - type "reboot"
 - add user
   - "useradd -m -g users -G wheel,storage,power -s /bin/bash areriff"
   - passwd areriff
@@ -61,26 +73,23 @@
     - "sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak"
   - "sudo reflector --verbose --latest 5 --sort rate --country Singapore --save /etc/pacman.d/mirrorlist"
 
-- put these two lines in /etc/pacman.conf
-    [aur-archlinux]
-    Server = https://repo.itmettke.de/aur/$repo/$arch
-- pacman -S terminator
+
 - pacman -S xorg
 - pacman -S xorg-xinit
+- pacman -S i3-wm i3blocks i3status i3-gaps i3lock dmenu
+- Optional Dependencies for i3blocks
+  - pacman -S acpi bc lm_sensors openvpn playerctl alsa-utils sysstat python2
+- pacman -S terminator
 - put "exec i3" (without quotation mark) in ~/.xinitrc
-- startx
-- install dmenu2
 - install gtkmm3
 - for vm:
-  - install open-vm-tools
-  - install xf86-input-vmmouse
-  - install xf86-video-vmware
-  - run "systemctl enable vmtoolsd.service" (without quotation mark)
-  - run "systemctl start vmtoolsd.service" (without quotation mark)
-  - run "systemctl enable vmware-vmblock-fuse.service" (without quotation mark)
-  - run "systemctl start vmware-vmblock-fuse.service" (without quotation mark)
-  - run "vmware-toolbox-cmd timesync enable" (without quotation mark)
-  - run "hwclock --hctosys --localtime" (without quotation mark)
+  - install open-vm-tools xf86-input-vmmouse xf86-video-vmware gtkmm3 networkmanager
+  - run "sudo systemctl enable vmtoolsd.service" (without quotation mark)
+  - run "sudo systemctl start vmtoolsd.service" (without quotation mark)
+  - run "sudo systemctl enable vmware-vmblock-fuse.service" (without quotation mark)
+  - run "sudo systemctl start vmware-vmblock-fuse.service" (without quotation mark)
+  - run "sudo vmware-toolbox-cmd timesync enable" (without quotation mark)
+  - run "sudo hwclock --hctosys --localtime" (without quotation mark)
   - put "vmware-user" before "exec i3" in ~/.xinitrc to enable drag and drop
 - install ttf-dejavu
 - install ttf-font-awesome
@@ -91,6 +100,10 @@
 - install python2-pygit2 (for powerline)
 - install powerline2 (remove powerline?)
 - install variety (or wallch or feh)
+- type "sudo pacman -S xterm gksu pacaur yaourt octopi-repoeditor octopi-cachecleaner octopi-notifier-qt5 pacmanlogviewer"
+- type "sudo pacman -S rsync compton"
+- type "sudo pacman -S falkon gedit gedit-plugins gucharmap libgit2-glib"
+- type "startx" to go into i3
 
 # Editing .config/i3/config
 ## Adjusting font
@@ -150,6 +163,10 @@
 ## CAPS and NUM key indicator
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
+
+- Copy i3blocks config to home directory
+  - mkdir -p ~/.config/i3blocks/
+  - cp /etc/i3blocks.conf ~/.config/i3blocks/config
 
 # Editing .config/i3blocks/config
 ## Uncomment these line to activate CAPS and NUM key indicator

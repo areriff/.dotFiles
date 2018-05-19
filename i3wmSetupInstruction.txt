@@ -106,6 +106,7 @@
 - type "startx" to go into i3
 - check time by typing "timedatectl"
   - type "ln -sf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime" to adjust the timezone again
+
 # Editing .config/i3/config
 ## Adjusting font
      font pango:DejaVu Sans Mono Regular 12
